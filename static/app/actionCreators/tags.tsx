@@ -83,7 +83,6 @@ export function fetchTagValues({
   orgSlug,
   tagKey,
   endpointParams,
-  includeReplays,
   includeSessions,
   includeTransactions,
   projectIds,
@@ -94,7 +93,6 @@ export function fetchTagValues({
   orgSlug: string;
   tagKey: string;
   endpointParams?: Query;
-  includeReplays?: boolean;
   includeSessions?: boolean;
   includeTransactions?: boolean;
   projectIds?: string[];
@@ -128,10 +126,6 @@ export function fetchTagValues({
 
   if (includeSessions) {
     query.includeSessions = '1';
-  }
-
-  if (includeReplays) {
-    query.includeReplays = '1';
   }
 
   if (sort) {
