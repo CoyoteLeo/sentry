@@ -96,7 +96,7 @@ class SlackNotifyActionTest(RuleTestCase):
 
         responses.add(
             method=responses.GET,
-            url='https://slack.com/api/channels.list',
+            url='https://slack.com/api/conversations.list',
             status=200,
             content_type='application/json',
             body=json.dumps(channels),
@@ -123,7 +123,7 @@ class SlackNotifyActionTest(RuleTestCase):
 
         responses.add(
             method=responses.GET,
-            url='https://slack.com/api/channels.list',
+            url='https://slack.com/api/conversations.list',
             status=200,
             content_type='application/json',
             body=json.dumps(channels),
@@ -165,7 +165,7 @@ class SlackNotifyActionTest(RuleTestCase):
 
         responses.add(
             method=responses.GET,
-            url='https://slack.com/api/channels.list',
+            url='https://slack.com/api/conversations.list',
             status=200,
             content_type='application/json',
             body=json.dumps(channels),
@@ -220,7 +220,7 @@ class SlackNotifyActionTest(RuleTestCase):
 
         responses.add(
             method=responses.GET,
-            url='https://slack.com/api/channels.list',
+            url='https://slack.com/api/conversations.list',
             status=200,
             content_type='application/json',
             body=json.dumps(channels),

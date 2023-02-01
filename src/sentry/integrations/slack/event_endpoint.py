@@ -64,9 +64,10 @@ class SlackEventEndpoint(Endpoint):
             access_token = integration.metadata['access_token'],
         else:
             access_token = integration.metadata['user_access_token'],
-
+        headers = {
+            "Authorization": "Bearer {}".format(integration.metadata['access_token'])
+        }
         payload = {
-            'token': access_token,
             'channel': data['channel'],
             'ts': data['message_ts'],
             'unfurls': json.dumps({
@@ -81,7 +82,7 @@ class SlackEventEndpoint(Endpoint):
         }
 
         session = http.build_session()
-        req = session.post('https://slack.com/api/chat.unfurl', data=payload)
+        req = session.post('https://slack.com/api/chat.unfurl', data=payload, headers=headers)
         req.raise_for_status()
         resp = req.json()
         if not resp.get('ok'):

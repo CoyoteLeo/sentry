@@ -108,14 +108,17 @@ class SlackNotifyServiceAction(EventAction):
             rules = [f.rule for f in futures]
             attachment = build_attachment(event.group, event=event, tags=tags, rules=rules)
 
+            headers = {
+                "Authorization": "Bearer {}".format(integration.metadata['access_token'])
+            }
+
             payload = {
-                'token': integration.metadata['access_token'],
                 'channel': channel,
                 'attachments': json.dumps([attachment]),
             }
 
             session = http.build_session()
-            resp = session.post('https://slack.com/api/chat.postMessage', data=payload)
+            resp = session.post('https://slack.com/api/chat.postMessage', data=payload, headers=headers)
             resp.raise_for_status()
             resp = resp.json()
             if not resp.get('ok'):
@@ -171,18 +174,17 @@ class SlackNotifyServiceAction(EventAction):
             return None
 
         session = http.build_session()
-
-        token_payload = {
-            'token': integration.metadata['access_token'],
+        headers = {
+            "Authorization": "Bearer {}".format(integration.metadata['access_token'])
         }
 
-        # Look for channel ID
-        channels_payload = dict(token_payload, **{
-            'exclude_archived': False,
-            'exclude_members': True,
-        })
-
-        resp = session.get('https://slack.com/api/channels.list', params=channels_payload)
+        resp = session.get(
+            'https://slack.com/api/conversations.list',
+            params={
+                'exclude_archived': False,
+            },
+            headers=headers
+        )
         resp = resp.json()
         if not resp.get('ok'):
             self.logger.info('rule.slack.channel_list_failed', extra={'error': resp.get('error')})
@@ -193,20 +195,8 @@ class SlackNotifyServiceAction(EventAction):
         if channel_id:
             return (CHANNEL_PREFIX, channel_id)
 
-        # Channel may be private
-        resp = session.get('https://slack.com/api/groups.list', params=channels_payload)
-        resp = resp.json()
-        if not resp.get('ok'):
-            self.logger.info('rule.slack.group_list_failed', extra={'error': resp.get('error')})
-            return None
-
-        group_id = {c['name']: c['id'] for c in resp['groups']}.get(name)
-
-        if group_id:
-            return (CHANNEL_PREFIX, group_id)
-
         # Channel may actually be a user
-        resp = session.get('https://slack.com/api/users.list', params=token_payload)
+        resp = session.get('https://slack.com/api/users.list', headers=headers)
         resp = resp.json()
         if not resp.get('ok'):
             self.logger.info('rule.slack.user_list_failed', extra={'error': resp.get('error')})
