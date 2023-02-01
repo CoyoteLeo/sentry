@@ -109,7 +109,7 @@ class SlackIntegrationProvider(IntegrationProvider):
         resp = session.get(
             'https://slack.com/api/team.info',
             headers={
-                "Authorization": "Bearer {}".format(user_token)
+                "Authorization": "Bearer {}".format(access_token)
             }
         )
         resp.raise_for_status()
