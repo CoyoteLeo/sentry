@@ -30,3 +30,34 @@ Resources
 * `Code <https://github.com/getsentry/sentry>`_
 * `IRC <irc://irc.freenode.net/sentry>`_  (irc.freenode.net, #sentry)
 * `Transifex <https://www.transifex.com/getsentry/sentry/>`_ (Translate Sentry!)
+
+Build
+---------
+
+# Requirement
+- python2.7
+- nodejs
+
+# Step
+1. Install node and npm via nvm
+```shell
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+nvm install 8.15.1
+npm install -g yarn
+yarn
+```
+
+2. Install python packages
+```shell
+pip install -r requirements-base.txt
+```
+
+3. Install sentry
+```shell
+pip install .
+```
+
+4. Build
+```shell
+python setup.py sdist bdist_wheel
+```
