@@ -117,12 +117,13 @@ class SlackIntegrationProvider(IntegrationProvider):
         return resp['team']
 
     def get_identity(self, user_token):
-        payload = {
-            'token': user_token,
-        }
-
         session = http.build_session()
-        resp = session.get('https://slack.com/api/auth.test', params=payload)
+        resp = session.post(
+            'https://slack.com/api/auth.test',
+            headers={
+                "Authorization": "Bearer {}".format(user_token)
+            }
+        )
         resp.raise_for_status()
         resp = resp.json()
 
