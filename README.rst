@@ -44,7 +44,7 @@ Build
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 nvm install 8.15.1
 npm install -g yarn
-yarn
+yarn install --pure-lockfile
 ```
 
 2. Install python packages
