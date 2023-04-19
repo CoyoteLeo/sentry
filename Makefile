@@ -184,6 +184,12 @@ publish:
 
 .PHONY: develop develop-only test build test reset-db clean setup-git update-submodules node-version-check install-system-pkgs install-yarn-pkgs install-sentry-dev build-js-po locale update-transifex build-platform-assets test-cli test-js test-styleguide test-python test-snuba test-acceptance lint lint-python lint-js publish
 
+############################
+# Docker                   #
+############################
+
+build:
+	docker build ./docker -t karta0910489/sentry:9.1.5
 
 ############################
 # Halt, Travis stuff below #
